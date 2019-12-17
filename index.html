@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>主页</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <style>
+        table {
+            margin-top: 20px;
+        }
+
+        h6 {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+<!-- 提示Modal start-->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">提示</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 提示Modal end-->
+<div class="container">
+    <h1><a href="#">
+        <img src="./img/logo.png" alt="">
+    </a></h1>
+    <h6>----</h6>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStudent">添加学生</button>
+    <button type="button" class="btn btn-danger" onclick="exit()">退出登录</button>
+    <div class="float-right col-4 input-group">
+        <label class="mr-sm-1 sr-only" for="searchMode">Preference</label>
+        <select class="custom-select border-primary" id="searchMode">
+            <option value="1" selected>学号</option>
+            <option value="2">姓名</option>
+            <option value="3">专业</option>
+        </select>
+        <input type="text" id="searchContent" class="form-control border-primary text-primary"
+               placeholder="要搜索的内容" aria-label="要搜索的内容" aria-describedby="button-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary" type="button" id="btnSearch" onclick="searchData()">搜索</button>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr class="row">
+            <th scope="col" class="col-1">ID</th>
+            <th scope="col" class="col-2">姓名</th>
+            <th scope="col" class="col-2">学号</th>
+            <th scope="col" class="col-1">性别</th>
+            <th scope="col" class="col-3">专业</th>
+            <th scope="col" class="col-3">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+<!-- 添加学生Modal start-->
+<div class="modal fade" id="addStudent" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">添加学生</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="add_stuName" class="col-form-label">学生姓名:</label>
+                        <input type="text" class="form-control" id="add_stuName" value="石鑫海">
+                    </div>
+                    <div class="form-group">
+                        <label for="add_stuNum" class="col-form-label">学生学号:</label>
+                        <input type="text" class="form-control" id="add_stuNum" value="222222" maxlength="9">
+                    </div>
+                    <div class="form-group">
+                        <label class="">性别:</label>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" checked id="add_man" name="sex" class="custom-control-input">
+                            <label class="custom-control-label" for="add_man">男</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="add_woman" name="sex" class="custom-control-input">
+                            <label class="custom-control-label" for="add_woman">女</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="add_stuMajor" class="d-block col-form-label">学生专业:</label>
+                        <label class="d-block">
+                            <select id="add_stuMajor" class="custom-select">
+                                <option value="1" selected>前端开发</option>
+                                <option value="2">软件技术</option>
+                                <option value="3">安卓开发</option>
+                                <option value="4">软件测试</option>
+                                <option value="5">大数据</option>
+                            </select>
+                        </label>
+                        <!--<input type="text" class="form-control" id="add_stuMajor" value="沙雕">-->
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">返回</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="addStu()">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 添加学生Modal end-->
+<!-- 修改学生Modal start-->
+<div class="modal fade" id="reStudent" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reStudentTitle">修改学生信息</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="re_stuID" class="col-form-label">学生ID:</label>
+                        <input type="text" class="form-control" id="re_stuID" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="re_stuName" class="col-form-label">学生姓名:</label>
+                        <input type="text" class="form-control" id="re_stuName">
+                    </div>
+                    <div class="form-group">
+                        <label for="re_stuNum" class="col-form-label">学生学号:</label>
+                        <input type="text" class="form-control" id="re_stuNum" maxlength="9">
+                    </div>
+                    <div class="form-group">
+                        <label class="">性别:</label>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" checked id="re_man" name="sex" class="custom-control-input">
+                            <label class="custom-control-label" for="re_man">男</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="re_woman" name="sex" class="custom-control-input">
+                            <label class="custom-control-label" for="re_woman">女</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="re_stuMajor" class="col-form-label">学生专业:</label>
+                        <label class="d-block">
+                            <select id="re_stuMajor" class="custom-select">
+                                <option value="1" selected>前端开发</option>
+                                <option value="2">软件技术</option>
+                                <option value="3">安卓开发</option>
+                                <option value="4">软件测试</option>
+                                <option value="5">大数据</option>
+                            </select>
+                        </label>
+                        <!--                        <input type="text" class="form-control" id="re_stuMajor">-->
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">返回</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="reData()">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 修改学生Modal end-->
+<script src="js/jquery-3.4.1.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/cookie.js"></script>
+<script src="js/ajax.js"></script>
+<script>
+    //调用cookie判断是否登录
+    let isLogin;
+    let data = {};
+    isLogin = getCookie('isLogin');
+    if (isLogin !== '1') {
+        location.href = './login.html';
+    }
+
+    //退出登录，删除cookie
+    function exit() {
+        removeCookie('isLogin');
+        removeCookie('user');
+        location.href = './login.html';
+    }
+
+    //显示登录的管理员账号
+    let user = getCookie('user');
+    $('h6')[0].innerHTML = "欢迎您，管理员:" + user;
+
+    //搜索数据
+    function searchData() {
+        let searchMode = $('#searchMode')[0];//搜索方式
+        let searchContent = $('#searchContent')[0].value;//搜索内容
+        switch (searchMode.selectedIndex) {
+            case 0 :
+                //按学号搜索
+                searchMode = '0';
+                break;
+            case 1 :
+                //按姓名搜索
+                searchMode = '1';
+                break;
+            case 2 :
+                //按专业搜索
+                searchMode = '2';
+                break;
+        }
+        ajax({
+            type: 'post',
+            url: './search.php',
+            data: {
+                mode: searchMode,
+                content: searchContent
+            },
+            success: function (d) {
+                data = JSON.parse(d);
+                switch (data.code) {
+                    case "1" :
+                        //搜索成功
+                        let str = '';
+                        let count = 0;
+                        for (let key in data.info) {
+                            count++;
+                            str += `<tr data-id="${data.info[key]['id']}" class="row">
+                                        <th id="re_count" scope="row"  class="col-1">${count}</th>
+                                        <td id="re_name" class="col-2">${data.info[key]['name']}</td>
+                                        <td id="re_num" class="col-2">${data.info[key]['num']}</td>
+                                        <td id="re_sex" class="col-1">${sexShow(data.info[key]['sex'])}</td>
+                                        <td id="re_major" class="col-3">${data.info[key]['major']}</td>
+                                        <td class="col-3">
+                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#reStudent">修改</button>
+                                            <button type="button" class="btn btn-danger btn-sm">删除</button>
+                                        </td>
+                                    </tr>`;
+                        }
+                        $('tbody')[0].innerHTML = str;
+                        break;
+                    case "0" :
+                        //未找到
+                        $('.modal-body')[0].innerHTML = data.info;
+                        $('#infoModal').modal('show');
+                        break;
+                }
+            }
+        });
+    }
+
+    //渲染数据
+    function renderData() {
+        ajax({
+            type: 'post',
+            url: './rander.php',
+            data: {},
+            success: function (d) {
+                d = JSON.parse(d);
+                if (d.code === '1'){
+                    //查询成功
+                    let str = '';
+                    let count = 0;
+                    for (let key in d['info']) {
+                        count++;
+                        str += `<tr data-id="${d['info'][key]['id']}" class="row">
+                                    <th id="re_count" scope="row"  class="col-1">${count}</th>
+                                    <td id="re_name" class="col-2">${d['info'][key]['name']}</td>
+                                    <td id="re_num" class="col-2">${d['info'][key]['num']}</td>
+                                    <td id="re_sex" class="col-1">${sexShow(d['info'][key]['sex'])}</td>
+                                    <td id="re_major" class="col-3">${d['info'][key]['major']}</td>
+                                    <td class="col-3">
+                                        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#reStudent">修改</button>
+                                        <button type="button" class="btn btn-danger btn-sm">删除</button>
+                                    </td>
+                                </tr>`;
+                    }
+                    $('tbody')[0].innerHTML = str;
+                }else {
+                    $('.modal-body')[0].innerHTML = d.info;
+                    $('#infoModal').modal('show');
+                }
+            }
+        });
+    }
+
+    //把1和0转换为男女
+    function sexShow(type) {
+        return type === '1' ? "男" : "女";
+    }
+
+    //添加数据
+    function addStu() {
+        let add_stuName = $('#add_stuName')[0].value;
+        let add_stuNum = $('#add_stuNum')[0].value;
+        let add_stuSex = 1;
+        if ($('#add_man')[0].checked === false) {
+            add_stuSex = 0;
+        }
+        let add_Major = $('#add_stuMajor')[0][$('#add_stuMajor')[0].selectedIndex].text;
+        ajax({
+            type: 'post',
+            url: './addstu.php',
+            data: {
+                name: add_stuName,
+                num: add_stuNum,
+                sex: add_stuSex,
+                major: add_Major
+            },
+            success: function (d) {
+                d = JSON.parse(d);
+                switch (d.code) {
+                    case '1' :
+                        //添加成功
+                        renderData();
+                    case '0':
+                    //学号重复
+                }
+                $('.modal-body')[0].innerHTML = d.info;
+                $('#infoModal').modal('show');
+            }
+        });
+    }
+
+    //修改数据
+    function reData() {
+        let name = $("#re_stuName")[0].value;
+        let num = $("#re_stuNum")[0].value;
+        let sex = 0;
+        if ($("#re_man")[0].checked === true) {
+            sex = 1;
+        } else {
+            sex = 0;
+        }
+        let major = $('#add_stuMajor')[0][$('#re_stuMajor')[0].selectedIndex].text;
+        let id = $("#re_stuID")[0].value;
+        ajax({
+            type: 'post',
+            url: './restu.php',
+            data: {
+                id: id,
+                name: name,
+                num: num,
+                sex: sex,
+                major: major
+            },
+            success(d) {
+                d = JSON.parse(d);
+                switch (d.code) {
+                    case '1' :
+                        //修改成功
+                        renderData();
+                        break;
+                    case '0' :
+                        //学号重复
+                        break;
+                }
+                $('.modal-body')[0].innerHTML = d.info;
+                $('#infoModal').modal('show');
+            }
+        })
+    }
+
+    //委托事件
+    $(function () {
+        let oTbody = $('tbody');
+        oTbody.click(function (e) {
+            e = e || window.event;
+            let target = e.target || e.srcElement;
+            // console.log(target.tagName + target.className);
+            if (target.tagName === 'BUTTON' && target.className === 'btn btn-warning btn-sm') {
+                //修改事件
+                let xuhao = $(target.parentNode.parentNode)[0].children[0].innerText;//前面的序号
+                let id = target.parentNode.parentNode.getAttribute('data-id');//数据库的ID
+                let name = $(target.parentNode.parentNode)[0].children[1].innerText;//姓名
+                let num = $(target.parentNode.parentNode)[0].children[2].innerText;//学号
+                let sex = $(target.parentNode.parentNode)[0].children[3].innerText;//性别
+                let major = $(target.parentNode.parentNode)[0].children[4].innerText;//专业
+                $('#re_stuID')[0].value = id;
+                let input_reName = $("#re_stuName")[0];
+                let input_reNum = $("#re_stuNum")[0];
+                if (sex === '男') {
+                    $("#re_man")[0].checked = true;
+                } else {
+                    $("#re_woman")[0].checked = true;
+                }
+                let input_reMajor = $("#re_stuMajor")[0];
+                let majorNum;
+                input_reName.value = name;
+                input_reNum.value = num;
+                switch (major) {
+                    case '前端开发' :
+                        majorNum = 1;
+                        break;
+                    case '软件技术' :
+                        majorNum = 2;
+                        break;
+                    case '安卓开发' :
+                        majorNum = 3;
+                        break;
+                    case '软件测试' :
+                        majorNum = 4;
+                        break;
+                    case '大数据' :
+                        majorNum = 5;
+                        break;
+                }
+                input_reMajor.selectedIndex = majorNum - 1;
+            }
+            if (target.tagName === 'BUTTON' && target.className === 'btn btn-danger btn-sm') {
+                //删除事件
+                let id = target.parentNode.parentNode.getAttribute('data-id');
+                ajax({
+                    type: 'post',
+                    url: './delete.php',
+                    data: {
+                        id: id
+                    },
+                    success: function (d) {
+                        d = JSON.parse(d);
+                        switch (d.code) {
+                            case '1' :
+                                //删除成功
+                                target.parentNode.parentNode.remove();
+                            case '0':
+                            //删除失败
+                        }
+                        $('.modal-body')[0].innerHTML = d.info;
+                        $('#infoModal').modal('show');
+                    }
+                });
+            }
+        });
+    });
+    renderData();
+</script>
+</body>
+</html>

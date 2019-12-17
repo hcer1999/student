@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>学生注册界面</title>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        html,body{
+            width: 100%;
+            background: url("./img/bj.png");
+        }
+        .container{
+            background: #fff;
+            width: 400px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            border-radius: 20px;
+        }
+        .btn{
+            display: block;
+            width: 50%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<!-- Modal start -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">提示</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->
+<div class="container shadow p-3 mb-5 bg-white rounded">
+    <h1 class="text-center"><a  href="#">
+        <img src="./img/logo.png" alt="logo">
+    </a></h1>
+    <small id="emailHelp" class="form-text text-muted text-center">学生注册</small>
+    <form>
+        <div class="form-group">
+            <label for="name">姓名:</label>
+            <input type="text" class="form-control" value="小马哥" id="name">
+        </div>
+        <div class="form-group">
+            <label for="num">学号:</label>
+            <input type="text" class="form-control" value="1724042" id="num">
+        </div>
+        <div class="form-group">
+            <label class="d-block">性别</label>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" checked id="man" name="sex" class="custom-control-input">
+                <label class="custom-control-label" for="man">男</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="woman" name="sex" class="custom-control-input">
+                <label class="custom-control-label" for="woman">女</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="major">专业</label>
+            <input type="text" class="form-control" value="软件技术" id="major">
+        </div>
+        <!--        <div class="form-group form-check">-->
+        <!--            <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
+        <!--            <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
+        <!--        </div>-->
+        <button id="registerBtn" type="button" class="btn btn-primary">注册</button>
+    </form>
+</div>
+
+<script src="./js/jquery-3.4.1.js"></script>
+<script src="./js/ajax.js"></script>
+<script src="./js/bootstrap.js"></script>
+<script>
+    let btn = $("#registerBtn");
+    // console.log(btn);
+    btn.click(function () {
+        let name = $("#name")[0].value;
+        let num = $("#num")[0].value;
+        let sex = 0;
+        if ($('#man')[0].checked === true){
+            sex = 1;
+        }else{
+            sex = 0;
+        }
+        // let sex = $("#sex")[0].value;
+        let major = $("#major")[0].value;
+        ajax({
+            type : 'post',
+            url : './addstu.php',
+            data : {
+                name : name,
+                num : num,
+                sex : sex,
+                major : major
+            },
+            success(d){
+                d = JSON.parse(d);
+                $('.modal-body')[0].innerHTML = d.info;
+                $('#infoModal').modal('toggle');
+                // console.log(d);
+            }
+        })
+    });
+</script>
+</body>
+</html>

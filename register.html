@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册界面</title>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        html, body {
+            width: 100%;
+            background: url("./img/bj.png");
+        }
+
+        .container {
+            background: #fff;
+            width: 400px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 20px;
+        }
+
+        .btn {
+            display: block;
+            width: 50%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<!-- Modal strat -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">提示</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->
+<div class="container shadow p-3 mb-5 bg-white rounded">
+    <h1 class="text-center"><a href="#">
+        <img src="./img/logo.png" alt="logo">
+    </a></h1>
+    <small id="emailHelp" class="form-text text-muted text-center">请输入用户名和密码注册</small>
+    <form>
+        <div class="form-group">
+            <label for="userName">用户名:</label>
+            <input type="text" class="form-control" id="userName" value="root">
+        </div>
+        <div class="form-group">
+            <label for="userPwd">密码:</label>
+            <input type="password" class="form-control" id="userPwd" value="root">
+        </div>
+        <div class="form-group">
+            <label for="checkPwd">确认密码:</label>
+            <input type="password" class="form-control" id="checkPwd">
+        </div>
+        <!--        <div class="form-group form-check">-->
+        <!--            <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
+        <!--            <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
+        <!--        </div>-->
+        <button id="registerBtn" type="button" class="btn btn-primary">注册</button>
+    </form>
+</div>
+
+<script src="./js/jquery-3.4.1.js"></script>
+<script src="./js/ajax.js"></script>
+<script src="./js/bootstrap.js"></script>
+<script>
+    // let data = {};
+    let btn = $("#registerBtn");
+    // console.log(btn);
+    btn.click(function () {
+        let userName = $('#userName')[0].value;
+        let userPwd = $('#userPwd')[0].value;
+        // console.log(userPwd + userName);
+        ajax({
+            type: 'post',
+            url: './register.php',
+            data: {
+                userName: userName,
+                userPwd: userPwd
+            },
+            success(d) {
+                data = JSON.parse(d);
+                console.log(data);
+                $('.modal-body')[0].innerHTML = data.info;
+                $('#infoModal').modal('show');
+            }
+        })
+    });
+    $('#infoModal').on('hidden.bs.modal', function () {
+        if (data.code == 1) {
+            location.href = './Login.html';
+        }
+    });
+
+</script>
+</body>
+</html>

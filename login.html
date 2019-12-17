@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录界面</title>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        html, body {
+            width: 100%;
+            background: url("./img/bj.png");
+        }
+
+        .container {
+            background: #fff;
+            width: 400px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 20px;
+        }
+
+        .btn {
+            display: block;
+            width: 50%;
+            margin: 0 auto;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container shadow p-3 mb-5 bg-white rounded">
+    <h1 class="text-center"><a href="#">
+        <img src="./img/logo.png" alt="logo">
+    </a></h1>
+    <small id="emailHelp" class="form-text text-muted text-center">管理员登陆</small>
+    <form>
+        <div class="form-group">
+            <label for="userName">用户名:</label>
+            <input type="text" class="form-control" id="userName" name="userName">
+
+        </div>
+        <div class="form-group">
+            <label for="userPwd">密码:</label>
+            <input type="password" class="form-control" id="userPwd" name="userPwd">
+        </div>
+        <!--        <div class="form-group form-check">-->
+        <!--            <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
+        <!--            <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
+        <!--        </div>-->
+        <button id="loginBtn" type="button" class="btn btn-primary">登录</button>
+    </form>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">提示</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./js/jquery-3.4.1.js"></script>
+<script src="./js/ajax.js"></script>
+<script src="./js/bootstrap.js"></script>
+<script src="./js/bootstrapValidator-0.5.3.js"></script>
+<script src="./js/cookie.js"></script>
+<script>
+    $(function () {
+        let isLogin = 0;
+        isLogin = getCookie('isLogin');
+        if (isLogin == 1) {
+            location.href = './index.html';
+        }
+        let btn = $('#loginBtn');
+        btn.click(function () {
+            let userName = $('#userName')[0].value;
+            let userPwd = $('#userPwd')[0].value;
+            ajax({
+                type: 'post',
+                url: './login.php',
+                data: {
+                    userName: userName,
+                    userPwd: userPwd
+                },
+                success(d) {
+                    d = JSON.parse(d);
+                    // console.log(d);
+                    $('.modal-body')[0].innerHTML = d.info;
+                    if (d.code == 1) {
+                        isLogin = 1;
+                    }
+                    $('#infoModal').modal('toggle');
+                }
+            });
+        });
+        $('#infoModal').on('hidden.bs.modal', function () {
+            if (isLogin == 1) {
+                setCookie('isLogin', 1, 1);
+                setCookie('user', $('#userName')[0].value, 1);
+                location.href = './index.html';
+            }
+        });
+    })
+</script>
+</body>
+</html>
